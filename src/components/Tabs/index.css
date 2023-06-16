@@ -1,0 +1,22 @@
+.tabs {
+  list-style: none;
+  display: flex;
+}
+.tab {
+  flex: 1 100%;
+  padding: 1.5rem;
+  background-color: rgb(27, 205, 205);
+  color: rgb(40, 40, 165);
+  border-right: 1px solid white;
+}
+
+.tab:last-of-type {
+  border-right: none;
+}
+
+.tab:hover {
+  flex: 1 100%;
+  padding: 1.5rem;
+  background-color: rgb(39, 89, 176);
+  color: white;
+}
