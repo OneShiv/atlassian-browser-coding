@@ -4,7 +4,9 @@ import NewsCard from "../NewsCard";
 
 let page = 1;
 
-function fetchData(setNewsData, newsData) {
+function fetchData(setNewsData, newsData, setLoading, setFetchError) {
+  setLoading(true);
+  setFetchError("");
   fetch(
     `https://newsapi.org/v2/everything?q=twitter&apiKey=d95d49440e324a6381a45a5f7dacac66&pageSize=30&page=${page}`
   )
@@ -12,9 +14,13 @@ function fetchData(setNewsData, newsData) {
       return res.json();
     })
     .then((resp) => {
-      console.log("asas", resp);
-      setNewsData(newsData.concat(...resp.articles));
-      page++;
+      if (resp.status !== "error") {
+        setNewsData(newsData.concat(...resp.articles));
+        page++;
+      } else {
+        setFetchError(resp.message);
+      }
+      setLoading(false);
     });
 }
 
@@ -26,7 +32,7 @@ function NewsListLib() {
   const [page, setCurrentPage] = useState(1);
 
   useEffect(() => {
-    fetchData(setNewsData, newsData);
+    fetchData(setNewsData, newsData, setLoading, setFetchError);
   }, []);
 
   if (!newsData.length) {

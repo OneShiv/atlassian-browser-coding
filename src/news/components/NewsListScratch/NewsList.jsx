@@ -33,11 +33,16 @@ function NewsList() {
           `https://newsapi.org/v2/everything?q=twitter&apiKey=d95d49440e324a6381a45a5f7dacac66&pageSize=30&page=${page}`
         );
         const response = await req.json();
-        setNewsData(newsData.concat(response.articles));
-        window.scrollTo({
-          top: lastScrolledRef.current,
-          behavior: "smooth",
-        });
+        if (response.status !== "error") {
+          setNewsData(newsData.concat(response.articles));
+          window.scrollTo({
+            top: lastScrolledRef.current,
+            behavior: "smooth",
+          });
+        } else {
+          setFetchError(response.message);
+        }
+
         setLoading(false);
       } catch (err) {
         setLoading(false);

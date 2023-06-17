@@ -3,8 +3,9 @@ import NewsCard from "../NewsCard";
 
 let page = 1;
 
-function fetchData(setNewsData, newsData, setLoading) {
+function fetchData(setNewsData, newsData, setLoading, setFetchError) {
   setLoading(true);
+  setFetchError("");
   fetch(
     `https://newsapi.org/v2/everything?q=twitter&apiKey=d95d49440e324a6381a45a5f7dacac66&pageSize=30&page=${page}`
   )
@@ -13,8 +14,12 @@ function fetchData(setNewsData, newsData, setLoading) {
     })
     .then((resp) => {
       console.log("obs", resp);
-      setNewsData(newsData.concat(...resp.articles));
-      page++;
+      if (resp.status !== "error") {
+        setNewsData(newsData.concat(...resp.articles));
+        page++;
+      } else {
+        setFetchError(resp.message);
+      }
       setLoading(false);
     });
 }
@@ -30,7 +35,7 @@ function NewsListIntObs() {
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
-          fetchData(setNewsData, newsData, setLoading);
+          fetchData(setNewsData, newsData, setLoading, setFetchError);
         }
       },
       {
@@ -47,29 +52,6 @@ function NewsListIntObs() {
       }
     };
   }, [lastElementRef]);
-
-  //   useEffect(() => {
-  //     (async function getNewsData() {
-  //       try {
-  //         setLoading(true);
-  //         const req = await fetch(
-  //           `https://newsapi.org/v2/everything?q=twitter&apiKey=d95d49440e324a6381a45a5f7dacac66&pageSize=30&page=${page}`
-  //         );
-  //         const response = await req.json();
-  //         setNewsData(newsData.concat(response.articles));
-  //         window.scrollTo({
-  //           top: lastScrolledRef.current,
-  //           behavior: "smooth",
-  //         });
-  //         setLoading(false);
-  //       } catch (err) {
-  //         setLoading(false);
-  //         setFetchError({
-  //           error: err,
-  //         });
-  //       }
-  //     })();
-  //   }, [page]);
 
   return (
     <div className="News">
