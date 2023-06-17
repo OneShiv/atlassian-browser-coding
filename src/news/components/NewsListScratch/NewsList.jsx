@@ -1,23 +1,21 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import NewsCard from "../NewsCard";
+import { EVERYTHING_URL, ONE_ARTICLE_HEIGHT } from "../../../constants";
 
 function NewsList() {
   const [newsData, setNewsData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [fetchError, setFetchError] = useState(null);
-
   const [page, setCurrentPage] = useState(1);
+
   const lastScrolledRef = useRef(0);
+
   const handleScroll = useCallback(function () {
     lastScrolledRef.current =
       window.innerHeight + document.documentElement.scrollTop;
-    console.log(
-      window.innerHeight + document.documentElement.scrollTop,
-      document.documentElement.offsetHeight - 180
-    );
     if (
       window.innerHeight + document.documentElement.scrollTop !==
-      document.documentElement.offsetHeight - 180
+      document.documentElement.offsetHeight - ONE_ARTICLE_HEIGHT
     ) {
       return;
     }
@@ -33,9 +31,7 @@ function NewsList() {
     (async function getNewsData() {
       try {
         setLoading(true);
-        const req = await fetch(
-          `https://newsapi.org/v2/everything?q=twitter&apiKey=d95d49440e324a6381a45a5f7dacac66&pageSize=30&page=${page}`
-        );
+        const req = await fetch(`${EVERYTHING_URL}${page}`);
         const response = await req.json();
         if (response.status !== "error") {
           setNewsData(newsData.concat(response.articles));

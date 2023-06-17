@@ -1,15 +1,16 @@
 import { useState, useCallback, useEffect } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import NewsCard from "../NewsCard";
-
+import { EVERYTHING_URL } from "../../../constants";
+// can we move this data to a hook?
+// imp part is maintaining of page , how we can do it.
+// right now kept individual version for simplicity
 let page = 1;
 
 function fetchData(setNewsData, newsData, setLoading, setFetchError) {
   setLoading(true);
   setFetchError("");
-  fetch(
-    `https://newsapi.org/v2/everything?q=twitter&apiKey=d95d49440e324a6381a45a5f7dacac66&pageSize=30&page=${page}`
-  )
+  fetch(`${EVERYTHING_URL}${page}`)
     .then((res) => {
       return res.json();
     })
@@ -29,15 +30,10 @@ function NewsListLib() {
   const [loading, setLoading] = useState(false);
   const [fetchError, setFetchError] = useState(null);
 
-  const [page, setCurrentPage] = useState(1);
-
   useEffect(() => {
     fetchData(setNewsData, newsData, setLoading, setFetchError);
   }, []);
 
-  if (!newsData.length) {
-    return <div>Loading ...</div>;
-  }
   return (
     <InfiniteScroll
       dataLength={newsData.length}
@@ -48,6 +44,8 @@ function NewsListLib() {
       {newsData.map((news, index) => (
         <NewsCard key={news.title} {...news} />
       ))}
+      {loading && <div>Loading data</div>}
+      {fetchError && <div>Error fetching data</div>}
     </InfiniteScroll>
   );
 }

@@ -1,19 +1,19 @@
 import { useState, useEffect, useRef } from "react";
 import NewsCard from "../NewsCard";
+import { EVERYTHING_URL } from "../../../constants";
+// can we move this data to a hook?
+// imp part is maintaining of page , how we can do it.
+// right now kept individual version for simplicity
 
 let page = 1;
-
 function fetchData(setNewsData, newsData, setLoading, setFetchError) {
   setLoading(true);
   setFetchError("");
-  fetch(
-    `https://newsapi.org/v2/everything?q=twitter&apiKey=d95d49440e324a6381a45a5f7dacac66&pageSize=30&page=${page}`
-  )
+  fetch(`${EVERYTHING_URL}${page}`)
     .then((res) => {
       return res.json();
     })
     .then((resp) => {
-      console.log("obs", resp);
       if (resp.status !== "error") {
         setNewsData(newsData.concat(...resp.articles));
         page++;
