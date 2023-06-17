@@ -11,9 +11,13 @@ function NewsList() {
   const handleScroll = useCallback(function () {
     lastScrolledRef.current =
       window.innerHeight + document.documentElement.scrollTop;
+    console.log(
+      window.innerHeight + document.documentElement.scrollTop,
+      document.documentElement.offsetHeight - 180
+    );
     if (
       window.innerHeight + document.documentElement.scrollTop !==
-      document.documentElement.offsetHeight
+      document.documentElement.offsetHeight - 180
     ) {
       return;
     }
@@ -53,15 +57,13 @@ function NewsList() {
     })();
   }, [page]);
 
-  if (fetchError) {
-    return <div>Facing issue getting data</div>;
-  }
   return (
     <div className="News">
       {newsData.map((news, index) => (
         <NewsCard key={news.title} {...news} />
       ))}
       {loading && <div>Loading....</div>}
+      {fetchError && <div>Facing issue getting data</div>}
     </div>
   );
 }

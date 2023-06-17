@@ -6,7 +6,12 @@ function NewsCard({ author, title, description, urlToImage, publishedAt }) {
   return (
     <article className="newsArticle">
       <aside className="newsArticle-image">
-        <img src={urlToImage} alt={description} />
+        <img
+          src={urlToImage}
+          alt={description}
+          loading="lazy"
+          encoding="async"
+        />
       </aside>
       <div className="newsArticle-content">
         <div className="newsArticle-content-text">

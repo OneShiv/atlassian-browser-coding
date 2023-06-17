@@ -41,7 +41,7 @@ function NewsListLib() {
   return (
     <InfiniteScroll
       dataLength={newsData.length}
-      next={() => fetchData(setNewsData, newsData)}
+      next={() => fetchData(setNewsData, newsData, setLoading, setFetchError)}
       hasMore={true}
       loader={<h4>Loading...</h4>}
     >

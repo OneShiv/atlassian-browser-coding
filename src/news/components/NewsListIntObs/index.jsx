@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef } from "react";
 import NewsCard from "../NewsCard";
 
 let page = 1;
@@ -56,11 +56,7 @@ function NewsListIntObs() {
   return (
     <div className="News">
       {newsData.map((news, index) => (
-        <NewsCard
-          key={news.title}
-          {...news}
-          ref={index === newsData.length - 1 ? lastElementRef : null}
-        />
+        <NewsCard key={news.title} {...news} />
       ))}
       {loading && <div>Loading....</div>}
       {fetchError && <div>Facing issue getting data</div>}
