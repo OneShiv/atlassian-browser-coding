@@ -5,6 +5,7 @@ import List from "./components/List";
 import NewsList from "./news/components/NewsListScratch/NewsList";
 import Tabs from "./components/Tabs";
 import NewsListLib from "./news/components/NewsListExistingLib";
+import NewsListIntObs from "./news/components/NewsListIntObs";
 // export default function App() {
 //   const [pagesData, setPagesData] = useState([]);
 
@@ -43,6 +44,7 @@ export default function App() {
       <Tabs tabs={tabs} onClick={onClick} />
       {currentTab === "From Scratch" && <NewsList />}
       {currentTab === "Existing Library" && <NewsListLib />}
+      {currentTab === "Intersection Observer" && <NewsListIntObs />}
     </div>
   );
 }
